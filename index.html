@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Occupancy – Smart desk and space occupancy tracking. Analytics, department capacity, and reports for modern workplaces." />
+  <title>Occupancy – Smart Space & Desk Occupancy Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue-900: #0f172a;
+      --blue-800: #1e293b;
+      --blue-700: #334155;
+      --blue-600: #2563eb;
+      --blue-500: #3b82f6;
+      --blue-400: #60a5fa;
+      --blue-100: #dbeafe;
+      --blue-50: #eff6ff;
+      --green-700: #15803d;
+      --green-600: #16a34a;
+      --green-500: #22c55e;
+      --green-400: #4ade80;
+      --green-100: #dcfce7;
+      --green-50: #f0fdf4;
+      --white: #ffffff;
+      --gray-100: #f8fafc;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--blue-800);
+      background: var(--gray-100);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 1rem 0;
+    }
+
+    .header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--blue-900);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--green-600); }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav a {
+      color: var(--blue-700);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover { color: var(--blue-600); }
+
+    @media (max-width: 640px) {
+      .nav { gap: 1rem; }
+      .nav a:not(.btn) { display: none; }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      text-decoration: none;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue-600), var(--blue-500));
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--blue-700), var(--blue-600));
+    }
+
+    .btn-green {
+      background: linear-gradient(135deg, var(--green-600), var(--green-500));
+      color: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    a.btn-green {
+      color: #ffffff;
+    }
+
+    .btn-green:hover {
+      background: linear-gradient(135deg, var(--green-700), var(--green-600));
+    }
+
+    /* Hero */
+    .hero {
+      padding: 4rem 0 5rem;
+      background: linear-gradient(180deg, var(--white) 0%, var(--blue-50) 50%, var(--green-50) 100%);
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.2;
+      color: var(--blue-900);
+      margin: 0 0 1rem;
+      letter-spacing: -0.03em;
+    }
+
+    .hero h1 .accent { color: var(--green-600); }
+
+    .hero .lead {
+      font-size: 1.25rem;
+      color: var(--blue-700);
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    /* Features */
+    .section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.875rem;
+      color: var(--blue-900);
+      text-align: center;
+      margin: 0 0 0.5rem;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--gray-500);
+      max-width: 540px;
+      margin: 0 auto 3rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-200);
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .feature-card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--blue-100);
+    }
+
+    .feature-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: var(--blue-900);
+      margin: 0 0 0.5rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      font-size: 0.9375rem;
+      color: var(--blue-700);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-icon.blue { background: var(--blue-100); color: var(--blue-600); }
+    .feature-icon.green { background: var(--green-100); color: var(--green-600); }
+
+    /* Screenshots */
+    .screenshots {
+      background: var(--white);
+      padding: 4rem 0;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .screenshots .section-title { margin-bottom: 1rem; }
+
+    .screenshot-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .screenshot-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .screenshot-grid .span-full { grid-column: 1 / -1; }
+    }
+
+    .screenshot-card {
+      background: var(--gray-100);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+    }
+
+    .screenshot-card img {
+      width: 100%;
+      height: auto;
+      min-height: 280px;
+      display: block;
+      object-fit: contain;
+      background: var(--gray-200);
+    }
+
+    .screenshot-card figcaption {
+      padding: 1rem 1.25rem;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--blue-800);
+      background: var(--white);
+    }
+
+    /* Contact */
+    .contact {
+      padding: 4rem 0 5rem;
+      background: linear-gradient(180deg, var(--green-50) 0%, var(--blue-50) 100%);
+    }
+
+    .contact-form-wrapper {
+      max-width: 520px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--gray-200);
+    }
+
+    .contact-form-wrapper h2 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--blue-900);
+      margin: 0 0 0.5rem;
+    }
+
+    .contact-form-wrapper .form-note {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      color: var(--blue-800);
+      margin-bottom: 0.375rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      font-size: 1rem;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      background: var(--white);
+      color: var(--blue-800);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue-500);
+      box-shadow: 0 0 0 3px var(--blue-100);
+    }
+
+    .form-group textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      margin-top: 1.5rem;
+    }
+
+    .form-actions .btn {
+      width: 100%;
+      padding: 0.875rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 2rem 0;
+      background: var(--blue-900);
+      color: var(--gray-400);
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    .footer a {
+      color: var(--blue-400);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <a href="#" class="logo">Occupancy<span>.</span></a>
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#screenshots">Screenshots</a>
+        <a href="#contact">Contact</a>
+        <a href="#contact" class="btn btn-green">Get in touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Smart desk & space occupancy tracking for modern workplaces</h1>
+        <p class="lead">Track capacity by department, visualize trends over time, and make data-driven decisions. One platform for surveys, analytics, and reports.</p>
+        <div class="cta">
+          <a href="#screenshots" class="btn btn-primary">See it in action</a>
+          <a href="#contact" class="btn btn-green">Request a demo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="section-title">Why Occupancy</h2>
+        <p class="section-subtitle">From floor surveys to executive dashboards – everything you need to understand and optimize space usage.</p>
+        <div class="features">
+          <div class="feature-card">
+            <div class="feature-icon blue">📊</div>
+            <h3>Department capacity & occupancy</h3>
+            <p>See average occupancy, total departments, and available desks at a glance. Color-coded levels (low / high / critical) for quick decisions.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon green">📈</div>
+            <h3>Trends over time</h3>
+            <p>Stacked bar charts show desk usage by day. Spot peaks and quiet periods to plan capacity and hybrid policies.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon blue">📋</div>
+            <h3>Weekly reports by department</h3>
+            <p>Monday–Friday occupancy percentages per department. Export-ready tables with totals and workstation counts.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon green">🗺️</div>
+            <h3>Multi-floor surveys</h3>
+            <p>Touch-friendly floor plans, time-slot surveys (e.g. 11am / 3pm), and bulk export. Perfect for tablets and facility teams.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="screenshots">
+      <div class="container">
+        <h2 class="section-title">See Occupancy in action</h2>
+        <p class="section-subtitle">Analytics, trends, and reports – professional and easy to use.</p>
+        <div class="screenshot-grid">
+          <figure class="screenshot-card span-full">
+            <img src="assets/image1.png" alt="Department Capacity vs Occupancy – bar chart and summary metrics" width="1200" height="675" />
+            <figcaption>Department Capacity vs Occupancy – average occupancy, departments, and available desks with drill-down by department.</figcaption>
+          </figure>
+          <figure class="screenshot-card">
+            <img src="assets/image2.png" alt="Number of desks over time – stacked bar chart" width="800" height="2
+            
+            50" />
+            <figcaption>Desk usage over time – visualize occupancy trends day by day.</figcaption>
+          </figure>
+          <figure class="screenshot-card">
+            <img src="assets/image3.png" alt="Department occupancy table Monday to Friday" width="800" height="450" />
+            <figcaption>Weekly department report – occupancy % by day with totals and workstation counts.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2 class="section-title">Get in touch</h2>
+        <p class="section-subtitle">Interested in a demo or pricing? Send us a message and we’ll reply soon.</p>
+        <div class="contact-form-wrapper">
+          <h2>Contact us</h2>
+          <p class="form-note">We’ll respond at <strong>adaeltonmgoulart@gmail.com</strong>.</p>
+          <form id="contact-form">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your needs (company size, use case, timeline)…" required></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-green">Send message</button>
+            </div>
+          </form>
+          <p style="margin-top:1rem; font-size:0.8125rem; color: var(--gray-500);">Clicking “Send message” opens your email client with your message addressed to adaeltonmgoulart@gmail.com.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© <span id="year"></span> Occupancy. Smart space & desk occupancy tracking.</p>
+      <p><a href="mailto:adaeltonmgoulart@gmail.com">adaeltonmgoulart@gmail.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('name').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var message = document.getElementById('message').value.trim();
+      var subject = 'Occupancy – Contact from ' + (name || 'Landing page visitor');
+      var body = 'Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + message;
+      var mailto = 'mailto:adaeltonmgoulart@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      window.location.href = mailto;
+    });
+  </script>
+</body>
+</html>
