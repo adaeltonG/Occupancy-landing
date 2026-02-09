@@ -239,18 +239,27 @@
     }
 
     .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius);
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      justify-content: flex-start;
+      margin-bottom: 1.25rem;
     }
 
-    .feature-icon.blue { background: var(--blue-100); color: var(--blue-600); }
-    .feature-icon.green { background: var(--green-100); color: var(--green-600); }
+    .feature-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .feature-icon.blue svg {
+      stroke: var(--blue-600);
+    }
+
+    .feature-icon.green svg {
+      stroke: var(--green-600);
+    }
 
     /* Screenshots */
     .screenshots {
@@ -298,6 +307,58 @@
       font-weight: 600;
       color: var(--blue-800);
       background: var(--white);
+    }
+
+    /* Image lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out;
+      z-index: 200;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: min(1120px, 100%);
+      max-height: 90vh;
+    }
+
+    .lightbox-image {
+      display: block;
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      background: var(--gray-200);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      border: none;
+      border-radius: 999px;
+      padding: 0.4rem 0.7rem;
+      background: rgba(15, 23, 42, 0.75);
+      color: #e5e7eb;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(15, 23, 42, 0.95);
     }
 
     /* Contact */
@@ -422,25 +483,49 @@
     <section id="features" class="section">
       <div class="container">
         <h2 class="section-title">Why Occupancy</h2>
-        <p class="section-subtitle">From floor surveys to executive dashboards – everything you need to understand and optimize space usage.</p>
+        <p class="section-subtitle">Reduce floor surveys from hours to minutes and see reliable occupancy data as fast as you can collect it.</p>
         <div class="features">
           <div class="feature-card">
-            <div class="feature-icon blue">📊</div>
+            <div class="feature-icon blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="3" y="11" width="4" height="8" rx="1.2" fill="none" />
+                <rect x="10" y="7" width="4" height="12" rx="1.2" fill="none" />
+                <rect x="17" y="4" width="4" height="15" rx="1.2" fill="none" />
+                <path d="M3 20.5h18" fill="none" />
+              </svg>
+            </div>
             <h3>Department capacity & occupancy</h3>
             <p>See average occupancy, total departments, and available desks at a glance. Color-coded levels (low / high / critical) for quick decisions.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon green">📈</div>
+            <div class="feature-icon green" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 16l4.5-4.5 3 3L19 7" fill="none" />
+                <path d="M15 7h4v4" fill="none" />
+                <path d="M4 20h16" fill="none" />
+              </svg>
+            </div>
             <h3>Trends over time</h3>
             <p>Stacked bar charts show desk usage by day. Spot peaks and quiet periods to plan capacity and hybrid policies.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon blue">📋</div>
+            <div class="feature-icon blue" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="3.5" y="6" width="17" height="12" rx="2" ry="2" fill="none" />
+                <path d="M3.5 10h17" fill="none" />
+                <path d="M8 14h3M13 14h3" fill="none" />
+              </svg>
+            </div>
             <h3>Weekly reports by department</h3>
             <p>Monday–Friday occupancy percentages per department. Export-ready tables with totals and workstation counts.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon green">🗺️</div>
+            <div class="feature-icon green" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21s6-5.3 6-10.2A6 6 0 006 10.8C6 15.7 12 21 12 21z" fill="none" />
+                <circle cx="12" cy="10.5" r="2" fill="none" />
+              </svg>
+            </div>
             <h3>Multi-floor surveys</h3>
             <p>Touch-friendly floor plans, time-slot surveys (e.g. 11am / 3pm), and bulk export. Perfect for tablets and facility teams.</p>
           </div>
@@ -454,18 +539,16 @@
         <p class="section-subtitle">Analytics, trends, and reports – professional and easy to use.</p>
         <div class="screenshot-grid">
           <figure class="screenshot-card span-full">
-            <img src="assets/image1.png" alt="Department Capacity vs Occupancy – bar chart and summary metrics" width="1200" height="675" />
-            <figcaption>Department Capacity vs Occupancy – average occupancy, departments, and available desks with drill-down by department.</figcaption>
+            <img src="assets/image3.png" alt="Department occupancy table Monday to Friday" width="1200" height="675" />
+            <figcaption align="center">Weekly department report</figcaption>
           </figure>
           <figure class="screenshot-card">
-            <img src="assets/image2.png" alt="Number of desks over time – stacked bar chart" width="800" height="2
-            
-            50" />
-            <figcaption>Desk usage over time – visualize occupancy trends day by day.</figcaption>
+            <img src="assets/image2.png" alt="Number of desks over time – stacked bar chart" width="800" height="250" />
+            <figcaption align="center">Desk usage over time – visualize occupancy trends day by day.</figcaption>
           </figure>
           <figure class="screenshot-card">
-            <img src="assets/image3.png" alt="Department occupancy table Monday to Friday" width="800" height="450" />
-            <figcaption>Weekly department report – occupancy % by day with totals and workstation counts.</figcaption>
+            <img src="assets/image1.png" alt="Department Capacity vs Occupancy – bar chart and summary metrics" width="800" height="450" />
+            <figcaption align="center">Department Capacity vs Occupancy.</figcaption>
           </figure>
         </div>
       </div>
@@ -477,7 +560,7 @@
         <p class="section-subtitle">Interested in a demo or pricing? Send us a message and we’ll reply soon.</p>
         <div class="contact-form-wrapper">
           <h2>Contact us</h2>
-          <p class="form-note">We’ll respond at <strong>adaeltonmgoulart@gmail.com</strong>.</p>
+          <p class="form-note">Our response time is 24h.</p>
           <form id="contact-form">
             <div class="form-group">
               <label for="name">Name</label>
@@ -495,7 +578,7 @@
               <button type="submit" class="btn btn-green">Send message</button>
             </div>
           </form>
-          <p style="margin-top:1rem; font-size:0.8125rem; color: var(--gray-500);">Clicking “Send message” opens your email client with your message addressed to adaeltonmgoulart@gmail.com.</p>
+          <p style="margin-top:1rem; font-size:0.8125rem; color: var(--gray-500);">Clicking “Send message” opens your email client with your message.</p>
         </div>
       </div>
     </section>
@@ -504,9 +587,16 @@
   <footer class="footer">
     <div class="container">
       <p>© <span id="year"></span> Occupancy. Smart space & desk occupancy tracking.</p>
-      <p><a href="mailto:adaeltonmgoulart@gmail.com">adaeltonmgoulart@gmail.com</a></p>
+     
     </div>
   </footer>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-inner">
+      <img src="" alt="" class="lightbox-image" />
+      <button type="button" class="lightbox-close" aria-label="Close image">✕</button>
+    </div>
+  </div>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -521,6 +611,48 @@
       var mailto = 'mailto:adaeltonmgoulart@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       window.location.href = mailto;
     });
+
+    // Screenshot lightbox
+    (function () {
+      var lightbox = document.getElementById('lightbox');
+      var lightboxImg = lightbox.querySelector('.lightbox-image');
+      var closeBtn = lightbox.querySelector('.lightbox-close');
+
+      function openLightbox(src, alt) {
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || '';
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        lightboxImg.src = '';
+        lightboxImg.alt = '';
+      }
+
+      document.querySelectorAll('.screenshot-card img').forEach(function (img) {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', function () {
+          openLightbox(img.src, img.alt);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) {
+          closeLightbox();
+        }
+      });
+    })();
   </script>
 </body>
 </html>
